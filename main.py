@@ -10,7 +10,7 @@ import requests
 class discordBot(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setStyleSheet("QLabel {background: lightgrey;text-align: justify}")
+        self.setStyleSheet("QLabel {background: lightgrey}")
         #self.setStyleSheet("QLabel {background: lightgrey}")
         oImage = QtGui.QImage("DiscordLogo.jpg")
         sImage = oImage.scaled(QtCore.QSize(800,600))
@@ -45,7 +45,7 @@ class discordBot(QtWidgets.QWidget):
 
         self.setLayout(buttonlayout)
         self.show()
-"""        self.button.clicked.connect(handletext(self))
+        self.button.clicked.connect(handletext(self))
 
         
 
@@ -65,7 +65,7 @@ def sendtext(self):
 
     except Exception as e:
         print(f"A System error has occured: {e}", file=sys.stderr)
-"""
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
