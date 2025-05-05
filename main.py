@@ -1,4 +1,5 @@
 import json
+import http.client
 import sys
 import threading
 import random
@@ -10,8 +11,8 @@ import requests
 class discordBot(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
+        
         self.setStyleSheet("QLabel {background: lightgrey}")
-        #self.setStyleSheet("QLabel {background: lightgrey}")
         oImage = QtGui.QImage("DiscordLogo.jpg")
         sImage = oImage.scaled(QtCore.QSize(800,600))
         #pixmap = QtGui.QPixmap('DiscordLogo.jpg')
@@ -26,6 +27,7 @@ class discordBot(QtWidgets.QWidget):
         self.button = QtWidgets.QPushButton("Submit")
         self.label = QtWidgets.QLabel("Enter key:")
         self.input_box = QtWidgets.QLineEdit(self)
+        self.input_box.setPlaceholderText("Enter UUID")
         self.label.setMaximumHeight(20)
         self.label.setMinimumWidth(75)
         self.label.setAlignment(QtGui.Qt.AlignmentFlag.AlignCenter)
@@ -42,23 +44,46 @@ class discordBot(QtWidgets.QWidget):
         buttonlayout.addWidget(self.input_box)
         buttonlayout.addWidget(self.button)
 
+        
 
         self.setLayout(buttonlayout)
         self.show()
-        self.button.clicked.connect(handletext(self))
+        text = self.input_box.text()
+        #self.button.clicked.connect(handletext(self))
+        self.button.clicked.connect(self.buttonClick)
+    
+    def buttonClick(self):
+        text = self.input_box.text()
+        sendtext(text)
+        self.input_box.setText("")
 
-        
+
 
 def handletext(self):
     text_thread = threading.Thread(target=sendtext(self), daemon=True)
     text_thread.start()
 
+   
+def sendtext(text):
     
-def sendtext(self):
+
+    data = {
+        'method': 'auth',
+        'auth': text
+
+    }
+
+    json_data = json.dumps(data)
+
     try:
-        response = requests.post("../CMPS3390-Project3-Backend/main.py", data=json.dumps(self), headers={'Content-Type': 'application/json'})
-    
-        response.raise_for_status()
+        
+        conn = http.client.HTTPConnection("127.0.0.1", 8000)
+        conn.request("POST", "/", body=json_data, headers={'Content-Type': 'application/json'})
+        #response = requests.post(url, data=json.dumps(self), headers={'Content-Type': 'application/json'})
+
+        response = conn.getresponse()
+        print(response)
+        
 
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
