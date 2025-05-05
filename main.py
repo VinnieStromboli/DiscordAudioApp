@@ -48,7 +48,7 @@ class discordBot(QtWidgets.QWidget):
 
         self.setLayout(buttonlayout)
         self.show()
-        text = self.input_box.text()
+        
         #self.button.clicked.connect(handletext(self))
         self.button.clicked.connect(self.buttonClick)
     
