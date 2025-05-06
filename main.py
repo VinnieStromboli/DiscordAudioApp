@@ -20,27 +20,23 @@ class thirdWindow(QtWidgets.QWidget):
 
         self.setFixedWidth(1000)
         self.setFixedHeight(800)
+        
        
         self.button3 = QtWidgets.QPushButton("GO BACK")
         self.button4 = QtWidgets.QPushButton("Enter into the Queue")
-
-
         self.input_box3 = QtWidgets.QLineEdit(self)
-        
-        layout = QtWidgets.QVBoxLayout(self)
 
-       
+        layout = QtWidgets.QGridLayout()
         splitter = QtWidgets.QSplitter(QtCore.Qt.Vertical)
-
         
-        text_edit = QtWidgets.QTextEdit("Queue")
-        text_edit.setFixedHeight(100)
+        text_edit = QtWidgets.QTextEdit("PLAYLIST")
+        text_edit.setFixedHeight(50)
         text_edit.setFixedWidth(300)
+        
         splitter.addWidget(text_edit)
-        
-        
+         
         scroll_area = QtWidgets.QScrollArea()
-        scroll_area.setFixedHeight(200)
+        scroll_area.setFixedHeight(150)
         scroll_area.setWidgetResizable(True)
 
         
@@ -60,17 +56,32 @@ class thirdWindow(QtWidgets.QWidget):
         
         layout.addWidget(splitter)
 
-        self.setLayout(layout)
-        #self.resize(600, 400)    
+        #layout.addWidget(self.button3)
+        #layout.addWidget(self.button4)
+
+        #self.setLayout(layout)
+
+        #layout.addWidget(self.button3)
 
         self.myframe3 = QtWidgets.QFrame()
         self.myframe3.setFrameStyle(QtWidgets.QFrame.Shape.StyledPanel | QtWidgets.QFrame.Shadow.Plain)
 
-        button3layout = QtWidgets.QHBoxLayout(self.myframe3) 
-        button3layout.addWidget(self.button3)
+        button3layout = QtWidgets.QHBoxLayout()
+        #button4layout = QtWidgets.QHBoxLayout()
         
+        button3layout.addWidget(self.input_box3)
+        
+        button3layout.addWidget(self.button4)
+        button3layout.addSpacing(400)
+        button3layout.addWidget(self.button3)
+        button3layout.addSpacing(100)
+        
+
+        #button3layout.addLayout(button4layout)
+        #layout.addWidget(self.button3)
     
-        self.setLayout(button3layout)
+        layout.addLayout(button3layout,1,0)
+        self.setLayout(layout)
         self.show()
 
         self.button3.clicked.connect(self.close)
