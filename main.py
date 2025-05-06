@@ -3,27 +3,39 @@ import sys
 import threading
 from PySide6 import QtCore, QtWidgets, QtGui
 import requests
-from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription
+
 
 class connectedWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
+        self.setStyleSheet("QLabel {background: lightgrey}")
+        oImage = QtGui.QImage("DiscordLogo.jpg")
+        sImage = oImage.scaled(QtCore.QSize(800,600))
+        #pixmap = QtGui.QPixmap('DiscordLogo.jpg')
+        palette = QtGui.QPalette()
+        palette.setBrush(QtGui.QPalette.ColorRole.Window, QtGui.QBrush(sImage))
+        self.setPalette(palette)
+
         self.setFixedWidth(800)
         self.setFixedHeight(600)
 
         self.button = QtWidgets.QPushButton("Connect")
-        self.dropdown = QtWidgets.QComboBox()
+        self.input_box2 = QtWidgets.QLineEdit(self)
+        self.input_box2.setPlaceholderText("Enter Link")
 
         self.myframe2 = QtWidgets.QFrame()
         self.myframe2.setFrameStyle(QtWidgets.QFrame.Shape.StyledPanel | QtWidgets.QFrame.Shadow.Plain)
 
         button2layout = QtWidgets.QHBoxLayout(self.myframe2) 
         button2layout.addWidget(self.button)
-        button2layout.addWidget(self.dropdown)
+        button2layout.addWidget(self.input_box2)
 
         self.setLayout(button2layout)
         self.show()
+
+    def buttonClick2(self):
+        text = self.input_box.text()
 
 class discordBot(QtWidgets.QWidget):
     def __init__(self):
@@ -91,12 +103,22 @@ def sendtext(self, text):
         print(f"A System error has occured: {e}", file=sys.stderr)
     
     if response.status_code == 200:
-        checkRTC(self, text)
+        open_connectedWindow(self)
 
-def checkRTC(self, text):
+def open_connectedWindow(self):
+    self.hide()
+    if self.w is None:
+        self.w = connectedWindow()
+    self.w.show()
+    
+    #if response.status_code == 200:
+     #   checkRTC(self, text)
+
+"""def checkRTC(self, text):
 
     
-    data = { 'method': 'auth', 'auth': text, 'offer': {"sdp":params["sdp"], "type":params["type"]}}
+    data = { 'method': 'auth', 'auth': text 
+            'offer': {"sdp":params["sdp"], "type":params["type"]}}
 
     json_data = json.dumps(data)
 
@@ -116,7 +138,7 @@ def open_connectedWindow(self):
     if self.w is None:
         self.w = connectedWindow()
     self.w.show()
-
+"""
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
