@@ -1,28 +1,31 @@
 import json
 import sys
+
 import requests
 
-textLink = ""
 
-def Link(link: str):
-    textLink = link
+class Link:
+    textLink = ""
+    name = ""
+    time = 0
 
-def checkLink():
-    return
+    def __init__(self, link: str):
+        self.textLink = link
 
-def sendLink():
-    data = {
-        'method': 'sentlink',
-        'sentlink': textLink,
-        'auth': id["uuid"]
-    }
-    print(textLink, id["uuid"])
-    json_data = json.dumps(data)
+    def sendLink(self):
+        data = {
+            'method': 'sentlink',
+            'sentlink': self.textLink,
+            'auth': id["uuid"]
+        }
+        print(self.textLink, id["uuid"])
+        json_data = json.dumps(data)
 
-    try:
-        response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
-        print(response)
-    except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
-    except Exception as e:
-        print(f"A System error has occured: {e}", file=sys.stderr)
+        try:
+            response = requests.post("http://127.0.0.1:8000", data=json_data,
+                                     headers={'Content-Type': 'application/json'})
+            print(response)
+        except requests.exceptions.RequestException as e:
+            print(f"Request failed: {e}")
+        except Exception as e:
+            print(f"A System error has occured: {e}", file=sys.stderr)
