@@ -8,9 +8,11 @@ class Link:
     textLink = ""
     name = ""
     time = 0
+    id = {"uuid": ""}
 
-    def __init__(self, link: str):
+    def __init__(self, link: str, uuid):
         self.textLink = link
+        self.id = uuid
 
     def sendLink(self):
         data = {
