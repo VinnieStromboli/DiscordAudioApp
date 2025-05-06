@@ -18,24 +18,57 @@ class thirdWindow(QtWidgets.QWidget):
         palette.setBrush(QtGui.QPalette.ColorRole.Window, QtGui.QBrush(sImage))
         self.setPalette(palette)
 
-        self.setFixedWidth(800)
-        self.setFixedHeight(600)
-
-        
-        self.scroll = QtWidgets.QScrollArea()
-        
+        self.setFixedWidth(1000)
+        self.setFixedHeight(800)
        
         self.button3 = QtWidgets.QPushButton("GO BACK")
         self.button4 = QtWidgets.QPushButton("Enter into the Queue")
 
+
         self.input_box3 = QtWidgets.QLineEdit(self)
         
+        layout = QtWidgets.QVBoxLayout(self)
+
+       
+        splitter = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+
+        
+        text_edit = QtWidgets.QTextEdit("Queue")
+        text_edit.setFixedHeight(100)
+        text_edit.setFixedWidth(300)
+        splitter.addWidget(text_edit)
+        
+        
+        scroll_area = QtWidgets.QScrollArea()
+        scroll_area.setFixedHeight(200)
+        scroll_area.setWidgetResizable(True)
+
+        
+        scroll_content = QtWidgets.QWidget()
+        content_layout = QtWidgets.QVBoxLayout(scroll_content)
+        for i in range(50):
+            content_layout.addWidget(QtWidgets.QLabel(f"Item {i+1}"))
+
+        scroll_area.setWidget(scroll_content)
+
+        
+        splitter.addWidget(scroll_area)
+
+        
+        splitter.setSizes([200, 300])  
+
+        
+        layout.addWidget(splitter)
+
+        self.setLayout(layout)
+        #self.resize(600, 400)    
 
         self.myframe3 = QtWidgets.QFrame()
         self.myframe3.setFrameStyle(QtWidgets.QFrame.Shape.StyledPanel | QtWidgets.QFrame.Shadow.Plain)
 
         button3layout = QtWidgets.QHBoxLayout(self.myframe3) 
         button3layout.addWidget(self.button3)
+        
     
         self.setLayout(button3layout)
         self.show()
@@ -198,7 +231,7 @@ def open_connectedWindow(self):
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
-    widget = discordBot()
+    widget = thirdWindow()
     widget.resize(800, 600)
     widget.show()
 
