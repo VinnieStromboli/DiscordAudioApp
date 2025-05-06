@@ -3,6 +3,7 @@ import sys
 import threading
 from PySide6 import QtCore, QtWidgets, QtGui
 import requests
+from aiortc import MediaStreamTrack, RTCPeerConnection, RTCSessionDescription
 
 class connectedWindow(QtWidgets.QWidget):
     def __init__(self):
@@ -78,6 +79,24 @@ def sendtext(self, text):
         'method': 'auth',
         'auth': text
     }
+
+    json_data = json.dumps(data)
+
+    try:
+        response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
+        print(response)    
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+    except Exception as e:
+        print(f"A System error has occured: {e}", file=sys.stderr)
+    
+    if response.status_code == 200:
+        checkRTC(self, text)
+
+def checkRTC(self, text):
+
+    
+    data = { 'method': 'auth', 'auth': text, 'offer': {"sdp":params["sdp"], "type":params["type"]}}
 
     json_data = json.dumps(data)
 
