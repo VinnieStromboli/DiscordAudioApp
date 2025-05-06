@@ -4,7 +4,7 @@ import threading
 from PySide6 import QtCore, QtWidgets, QtGui
 import requests
 
-
+id = {"uuid": ""}
 class connectedWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -12,7 +12,6 @@ class connectedWindow(QtWidgets.QWidget):
         self.setStyleSheet("QLabel {background: lightgrey}")
         oImage = QtGui.QImage("DiscordLogo.jpg")
         sImage = oImage.scaled(QtCore.QSize(800,600))
-        #pixmap = QtGui.QPixmap('DiscordLogo.jpg')
         palette = QtGui.QPalette()
         palette.setBrush(QtGui.QPalette.ColorRole.Window, QtGui.QBrush(sImage))
         self.setPalette(palette)
@@ -34,8 +33,35 @@ class connectedWindow(QtWidgets.QWidget):
         self.setLayout(button2layout)
         self.show()
 
+        self.button.clicked.connect(self.buttonClick2)
+
     def buttonClick2(self):
-        text = self.input_box.text()
+        textLink = self.input_box2.text()
+        handleLink(self, textLink)
+        self.input_box2.setText("")
+
+def handleLink(self, textLink):
+    text_thread = threading.Thread(target=sendLink(self, textLink), daemon=True)
+    text_thread.start()
+
+def sendLink(self, textLink):
+    
+    data = {
+        'method': 'sentlink',
+        'sentlink': textLink,
+        'auth': id["uuid"]
+    }
+    print(textLink, id["uuid"])
+    json_data = json.dumps(data)
+
+    try:
+        response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
+        print(response)    
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+    except Exception as e:
+        print(f"A System error has occured: {e}", file=sys.stderr)
+
 
 class discordBot(QtWidgets.QWidget):
     def __init__(self):
@@ -44,7 +70,6 @@ class discordBot(QtWidgets.QWidget):
         self.setStyleSheet("QLabel {background: lightgrey}")
         oImage = QtGui.QImage("DiscordLogo.jpg")
         sImage = oImage.scaled(QtCore.QSize(800,600))
-        #pixmap = QtGui.QPixmap('DiscordLogo.jpg')
         palette = QtGui.QPalette()
         palette.setBrush(QtGui.QPalette.ColorRole.Window, QtGui.QBrush(sImage))
         self.setPalette(palette)
@@ -71,7 +96,6 @@ class discordBot(QtWidgets.QWidget):
         self.setLayout(buttonlayout)
         self.show()
         
-        #self.button.clicked.connect(handletext(self)
         self.button.clicked.connect(self.buttonClick)
     
     def buttonClick(self):
@@ -83,10 +107,11 @@ class discordBot(QtWidgets.QWidget):
 def handletext(self, text):
     text_thread = threading.Thread(target=sendtext(self, text), daemon=True)
     text_thread.start()
-
+   
 
 def sendtext(self, text):
-
+    global id
+    id["uuid"] = text
     data = {
         'method': 'auth',
         'auth': text
@@ -110,35 +135,8 @@ def open_connectedWindow(self):
     if self.w is None:
         self.w = connectedWindow()
     self.w.show()
-    
-    #if response.status_code == 200:
-     #   checkRTC(self, text)
 
-"""def checkRTC(self, text):
 
-    
-    data = { 'method': 'auth', 'auth': text 
-            'offer': {"sdp":params["sdp"], "type":params["type"]}}
-
-    json_data = json.dumps(data)
-
-    try:
-        response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
-        print(response)    
-    except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
-    except Exception as e:
-        print(f"A System error has occured: {e}", file=sys.stderr)
-
-    if response.status_code == 200:
-        open_connectedWindow(self)
-
-def open_connectedWindow(self):
-    self.hide()
-    if self.w is None:
-        self.w = connectedWindow()
-    self.w.show()
-"""
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
