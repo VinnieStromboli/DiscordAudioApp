@@ -11,7 +11,11 @@ class thirdWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setStyleSheet("QLabel {background: lightgrey}")
+        self.setStyleSheet("QPushButton {background: rgb(224,227,255); color: rgb(0,0,0)}"
+                           "QLineEdit {background: rgb(224,227,255); color: rgb(0,0,0)}"
+                           "QTextEdit {background: rgb(224,227,255); color: rgb(0,0,0)}")
+                           #"QScrollArea > QWidget {background: rgb(224,227,255); color: rgb(0,0,0)}")
+        
         oImage = QtGui.QImage("DiscordLogo.jpg")
         sImage = oImage.scaled(QtCore.QSize(1000,800))
         palette = QtGui.QPalette()
@@ -21,9 +25,9 @@ class thirdWindow(QtWidgets.QWidget):
         self.setFixedWidth(1000)
         self.setFixedHeight(800)
         
-       
-        self.button3 = QtWidgets.QPushButton("GO BACK")
+        self.button3 = QtWidgets.QPushButton("EXIT THE BOT")
         self.button4 = QtWidgets.QPushButton("Enter into the Queue")
+        self.buttonDisconnect = QtWidgets.QPushButton("Disconnect")
         self.input_box3 = QtWidgets.QLineEdit(self)
 
         layout = QtWidgets.QGridLayout()
@@ -31,7 +35,7 @@ class thirdWindow(QtWidgets.QWidget):
         
         text_edit = QtWidgets.QTextEdit("PLAYLIST")
         text_edit.setFixedHeight(50)
-        text_edit.setFixedWidth(300)
+        text_edit.setFixedWidth(200)
         
         splitter.addWidget(text_edit)
          
@@ -47,38 +51,23 @@ class thirdWindow(QtWidgets.QWidget):
 
         scroll_area.setWidget(scroll_content)
 
-        
         splitter.addWidget(scroll_area)
-
-        
+       
         splitter.setSizes([200, 300])  
-
-        
+  
         layout.addWidget(splitter)
-
-        #layout.addWidget(self.button3)
-        #layout.addWidget(self.button4)
-
-        #self.setLayout(layout)
-
-        #layout.addWidget(self.button3)
 
         self.myframe3 = QtWidgets.QFrame()
         self.myframe3.setFrameStyle(QtWidgets.QFrame.Shape.StyledPanel | QtWidgets.QFrame.Shadow.Plain)
 
         button3layout = QtWidgets.QHBoxLayout()
-        #button4layout = QtWidgets.QHBoxLayout()
-        
+          
         button3layout.addWidget(self.input_box3)
         
         button3layout.addWidget(self.button4)
         button3layout.addSpacing(400)
-        button3layout.addWidget(self.button3)
         button3layout.addSpacing(100)
-        
-
-        #button3layout.addLayout(button4layout)
-        #layout.addWidget(self.button3)
+        button3layout.addWidget(self.buttonDisconnect)
     
         layout.addLayout(button3layout,1,0)
         self.setLayout(layout)
@@ -86,30 +75,49 @@ class thirdWindow(QtWidgets.QWidget):
 
         self.button3.clicked.connect(self.close)
         self.button4.clicked.connect(self.buttonClick4)
+        self.buttonDisconnect.clicked.connect(self.send_message)
 
+    def send_message(self):
+        data = {
+            'method': 'disconnect',
+            'auth': id["uuid"]  
+        }
+        json_data = json.dumps(data)
+
+        try:
+            response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
+            print(response)    
+        except requests.exceptions.RequestException as e:
+            print(f"Request failed: {e}")
+        except Exception as e:
+            print(f"A System error has occured: {e}", file=sys.stderr)
+
+        sys.exit()
+    
     def buttonClick4(self):
         text = self.input_box3.text()
         # hayden this is:: a small input box where they can enter the new index they want:: will grab the text to send whenever you want
 
-    
 
 class connectedWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setStyleSheet("QLabel {background: lightgrey}")
+        self.setStyleSheet("QPushButton {background: rgb(224,227,255); color: rgb(0,0,0)}"
+                           "QLineEdit {background: rgb(224,227,255); color: rgb(0,0,0)}")
         oImage = QtGui.QImage("DiscordLogo.jpg")
         sImage = oImage.scaled(QtCore.QSize(800,600))
         palette = QtGui.QPalette()
         palette.setBrush(QtGui.QPalette.ColorRole.Window, QtGui.QBrush(sImage))
         self.setPalette(palette)
 
-        self.w = None
+        self.next = None
         self.setFixedWidth(800)
         self.setFixedHeight(600)
 
-        self.button = QtWidgets.QPushButton("Connect")
+        
         self.input_box2 = QtWidgets.QLineEdit(self)
+        self.button = QtWidgets.QPushButton("Connect")
         self.input_box2.setPlaceholderText("Enter Link")
 
         self.myframe2 = QtWidgets.QFrame()
@@ -151,25 +159,27 @@ def sendLink(self, textLink):
     except Exception as e:
         print(f"A System error has occured: {e}", file=sys.stderr)
 
-        if response.status_code == 200:
-            open_connectedWindow2(self)
+    if response.status_code == 200:
+        open_connectedWindow2(self)
 
 def open_connectedWindow2(self):
     self.hide()
-    if self.w is None:
-        self.w = thirdWindow()
-    self.w.show()
-    self.w.closed.connect(self.on_third_window_closed)
+    if self.next is None:
+        self.next = thirdWindow()
+    self.next.show()
+    #self.w.closed.connect(self.on_third_window_closed)
 
-def on_third_window_closed(self):
-    self.show()
-    self.w = None
+#def on_third_window_closed(self):
+    #self.show()
+    #self.w = None
 
 class discordBot(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         
-        self.setStyleSheet("QLabel {background: lightgrey}")
+        self.setStyleSheet("QPushButton {background: rgb(224,227,255); color: rgb(0,0,0)}"
+                           "QLineEdit {background: rgb(224,227,255); color: rgb(0,0,0)}"
+                           "QLabel {background: rgb(224,227,255); color: rgb(0,0,0)}")
         oImage = QtGui.QImage("DiscordLogo.jpg")
         sImage = oImage.scaled(QtCore.QSize(800,600))
         palette = QtGui.QPalette()
@@ -205,12 +215,10 @@ class discordBot(QtWidgets.QWidget):
         handletext(self, text)
         self.input_box.setText("")
 
-
 def handletext(self, text):
     text_thread = threading.Thread(target=sendtext(self, text), daemon=True)
     text_thread.start()
    
-
 def sendtext(self, text):
     global id
     id["uuid"] = text
@@ -242,7 +250,7 @@ def open_connectedWindow(self):
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
-    widget = thirdWindow()
+    widget = discordBot()
     widget.resize(800, 600)
     widget.show()
 
