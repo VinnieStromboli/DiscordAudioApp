@@ -17,9 +17,10 @@ class LinkQueue(QtCore.QAbstractListModel):
     def rowCount(self, parent: QModelIndex = QModelIndex()) -> int:
         return len(self.links)
 
-    def addLink(self, link: Link):
+    def addLink(self, link: str):
+        tempLink = Link(link)
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self.links.append(link)
+        self.links.append(tempLink)
         self.endInsertRows()
 
     def removeLink(self, index: int):

@@ -3,6 +3,8 @@ import sys
 import threading
 from PySide6 import QtCore, QtWidgets, QtGui
 import requests
+from PySide6.QtWidgets import QListView, QVBoxLayout
+
 from Models.LinkQueue import LinkQueue
 
 id = {"uuid": ""}
@@ -39,22 +41,32 @@ class thirdWindow(QtWidgets.QWidget):
         
         splitter.addWidget(text_edit)
          
-        scroll_area = QtWidgets.QScrollArea()
-        scroll_area.setFixedHeight(150)
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setStyleSheet("QScrollArea { background-color: rgb(90, 100, 242) }")
-        scroll_area.viewport().setStyleSheet("background-color: rgb(90, 100, 242);")
+        # scroll_area = QtWidgets.QScrollArea()
+        # scroll_area.setFixedHeight(150)
+        # scroll_area.setWidgetResizable(True)
+        # scroll_area.setStyleSheet("QScrollArea { background-color: rgb(90, 100, 242) }")
+        # scroll_area.viewport().setStyleSheet("background-color: rgb(90, 100, 242);")
+        #
+        # scroll_content = QtWidgets.QWidget()
+        # content_layout = QtWidgets.QVBoxLayout(scroll_content)
+        # for i in range(50):
+        #     content_layout.addWidget(QtWidgets.QLabel(f"Item {i+1}"))
+        #
+        # scroll_area.setWidget(scroll_content)
 
-        scroll_content = QtWidgets.QWidget()
-        content_layout = QtWidgets.QVBoxLayout(scroll_content)
-        for i in range(50):
-            content_layout.addWidget(QtWidgets.QLabel(f"Item {i+1}"))
+        self.list_view = QListView()
+        self.list_view.setFixedHeight(150)
+        self.list_view.setUniformItemSizes(True)
+        # self.list_view.setResizeMode(QListView)
 
-        scroll_area.setWidget(scroll_content)
+        self.list_view.setStyleSheet("QListView { background-color: rgb(90, 100, 242); }")
+        self.list_view.viewport().setStyleSheet("background-color: rgb(90, 100, 242);")
 
-        splitter.addWidget(scroll_area)
+        self.list_view.setModel(queue)
+
+        splitter.addWidget(self.list_view)
        
-        splitter.setSizes([200, 600])
+        splitter.setSizes([200, 300])
   
         layout.addWidget(splitter)
 
@@ -171,13 +183,13 @@ def sendLink(self, textLink):
     try:
         response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
         print(response)
-
-        if response.status_code == 200:
-            open_connectedWindow2(self)
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
     except Exception as e:
         print(f"A System error has occurred: {e}", file=sys.stderr)
+
+    if response.status_code == 200:
+        open_connectedWindow2(self)
 
 def open_connectedWindow2(self):
     #self.hide()
@@ -249,13 +261,13 @@ def sendtext(self, text):
     try:
         response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
         print(response)
-
-        if response.status_code == 200:
-            open_connectedWindow(self)
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
     except Exception as e:
         print(f"A System error has occurred: {e}", file=sys.stderr)
+
+    if response.status_code == 200:
+        open_connectedWindow(self)
 
 def open_connectedWindow(self):
     self.hide()
@@ -267,7 +279,7 @@ def open_connectedWindow(self):
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
-    widget = thirdWindow()
+    widget = discordBot()
     widget.resize(800, 600)
     widget.show()
 
