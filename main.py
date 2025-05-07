@@ -251,7 +251,7 @@ def open_connectedWindow(self):
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
-    widget = thirdWindow()
+    widget = discordBot()
     widget.resize(800, 600)
     widget.show()
 
