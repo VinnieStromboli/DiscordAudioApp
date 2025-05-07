@@ -41,8 +41,9 @@ class thirdWindow(QtWidgets.QWidget):
         scroll_area = QtWidgets.QScrollArea()
         scroll_area.setFixedHeight(150)
         scroll_area.setWidgetResizable(True)
+        scroll_area.setStyleSheet("QScrollArea { background-color: rgb(90, 100, 242) }")
+        scroll_area.viewport().setStyleSheet("background-color: rgb(90, 100, 242);")
 
-        
         scroll_content = QtWidgets.QWidget()
         content_layout = QtWidgets.QVBoxLayout(scroll_content)
         for i in range(50):
