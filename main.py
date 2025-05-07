@@ -56,6 +56,7 @@ class thirdWindow(QtWidgets.QWidget):
 
         self.list_view = QListView()
         self.list_view.setFixedHeight(150)
+        self.list_view.setFixedWidth(600)
         self.list_view.setUniformItemSizes(True)
         # self.list_view.setResizeMode(QListView)
 
