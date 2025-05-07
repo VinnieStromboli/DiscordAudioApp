@@ -144,7 +144,7 @@ class connectedWindow(QtWidgets.QWidget):
 
     def buttonClick2(self):
         textLink = self.input_box2.text()
-        handleLink(self, textLink)
+        # handleLink(self, textLink)
         queue.addLink(textLink)
         self.input_box2.setText("")
     
@@ -279,8 +279,12 @@ def open_connectedWindow(self):
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
-    widget = discordBot()
+    widget = connectedWindow()
     widget.resize(800, 600)
     widget.show()
+
+    widget2 = thirdWindow()
+    widget2.resize(800, 600)
+    widget2.show()
 
     sys.exit(app.exec())

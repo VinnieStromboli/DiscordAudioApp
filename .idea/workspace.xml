@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f021846-247b-4f00-ae04-a71209502491" name="Changes" comment="setup for new LinkQueue purpose">
+    <list default="true" id="7f021846-247b-4f00-ae04-a71209502491" name="Changes" comment="fixing errors?">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/LinkQueue.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/LinkQueue.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746586756556</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fixing errors?">
+      <option name="closed" value="true" />
+      <created>1746592218293</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1746592218293</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -167,6 +174,7 @@
     <MESSAGE value="figured out how to change scroll pane's color" />
     <MESSAGE value="changed back to discordbot widget" />
     <MESSAGE value="setup for new LinkQueue purpose" />
-    <option name="LAST_COMMIT_MESSAGE" value="setup for new LinkQueue purpose" />
+    <MESSAGE value="fixing errors?" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing errors?" />
   </component>
 </project>
