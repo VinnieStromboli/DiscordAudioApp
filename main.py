@@ -14,21 +14,20 @@ class thirdWindow(QtWidgets.QWidget):
         self.setStyleSheet("QPushButton {background: rgb(224,227,255); color: rgb(0,0,0)}"
                            "QLineEdit {background: rgb(224,227,255); color: rgb(0,0,0)}"
                            "QTextEdit {background: rgb(224,227,255); color: rgb(0,0,0)}")
-                           #"QScrollArea > QWidget {background: rgb(224,227,255); color: rgb(0,0,0)}")
-        
+  
         oImage = QtGui.QImage("DiscordLogo.jpg")
-        sImage = oImage.scaled(QtCore.QSize(1000,800))
+        sImage = oImage.scaled(QtCore.QSize(800,600))
         palette = QtGui.QPalette()
         palette.setBrush(QtGui.QPalette.ColorRole.Window, QtGui.QBrush(sImage))
         self.setPalette(palette)
 
-        self.setFixedWidth(1000)
-        self.setFixedHeight(800)
+        self.setFixedWidth(800)
+        self.setFixedHeight(600)
         
-        self.button3 = QtWidgets.QPushButton("EXIT THE BOT")
-        self.button4 = QtWidgets.QPushButton("Enter into the Queue")
+        #self.button3 = QtWidgets.QPushButton("EXIT THE BOT")
+        #self.button4 = QtWidgets.QPushButton("Enter into the Queue")
         self.buttonDisconnect = QtWidgets.QPushButton("Disconnect")
-        self.input_box3 = QtWidgets.QLineEdit(self)
+        #self.input_box3 = QtWidgets.QLineEdit(self)
 
         layout = QtWidgets.QGridLayout()
         splitter = QtWidgets.QSplitter(QtCore.Qt.Vertical)
@@ -62,22 +61,22 @@ class thirdWindow(QtWidgets.QWidget):
 
         button3layout = QtWidgets.QHBoxLayout()
           
-        button3layout.addWidget(self.input_box3)
+        #button3layout.addWidget(self.input_box3)
         
-        button3layout.addWidget(self.button4)
-        button3layout.addSpacing(400)
-        button3layout.addSpacing(100)
+        #button3layout.addWidget(self.button4)
+        
+        #button3layout.addSpacing(100)
         button3layout.addWidget(self.buttonDisconnect)
     
         layout.addLayout(button3layout,1,0)
         self.setLayout(layout)
         self.show()
 
-        self.button3.clicked.connect(self.close)
-        self.button4.clicked.connect(self.buttonClick4)
-        self.buttonDisconnect.clicked.connect(self.send_message)
-
-    def send_message(self):
+        #self.button3.clicked.connect(self.close)
+        #self.button4.clicked.connect(self.buttonClick4)
+        self.buttonDisconnect.clicked.connect(self.disconnectbot)
+        
+    def disconnectbot(self):
         data = {
             'method': 'disconnect',
             'auth': id["uuid"]  
@@ -93,10 +92,6 @@ class thirdWindow(QtWidgets.QWidget):
             print(f"A System error has occured: {e}", file=sys.stderr)
 
         sys.exit()
-    
-    def buttonClick4(self):
-        text = self.input_box3.text()
-        # hayden this is:: a small input box where they can enter the new index they want:: will grab the text to send whenever you want
 
 
 class connectedWindow(QtWidgets.QWidget):
@@ -106,14 +101,14 @@ class connectedWindow(QtWidgets.QWidget):
         self.setStyleSheet("QPushButton {background: rgb(224,227,255); color: rgb(0,0,0)}"
                            "QLineEdit {background: rgb(224,227,255); color: rgb(0,0,0)}")
         oImage = QtGui.QImage("DiscordLogo.jpg")
-        sImage = oImage.scaled(QtCore.QSize(800,600))
+        sImage = oImage.scaled(QtCore.QSize(1000,800))
         palette = QtGui.QPalette()
         palette.setBrush(QtGui.QPalette.ColorRole.Window, QtGui.QBrush(sImage))
         self.setPalette(palette)
 
         self.next = None
-        self.setFixedWidth(800)
-        self.setFixedHeight(600)
+        self.setFixedWidth(1000)
+        self.setFixedHeight(800)
 
         
         self.input_box2 = QtWidgets.QLineEdit(self)
@@ -131,11 +126,30 @@ class connectedWindow(QtWidgets.QWidget):
         self.show()
 
         self.button.clicked.connect(self.buttonClick2)
+        app.aboutToQuit.connect(self.quitToDisconnect)
 
     def buttonClick2(self):
         textLink = self.input_box2.text()
         handleLink(self, textLink)
         self.input_box2.setText("")
+    
+
+    def quitToDisconnect(self):
+        data = {
+            'method': 'disconnect',
+            'auth': id["uuid"]  
+        }
+        json_data = json.dumps(data)
+
+        try:
+            response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
+            print(response)    
+        except requests.exceptions.RequestException as e:
+            print(f"Request failed: {e}")
+        except Exception as e:
+            print(f"A System error has occured: {e}", file=sys.stderr)
+
+        sys.exit()
 
 def handleLink(self, textLink):
     text_thread = threading.Thread(target=sendLink(self, textLink), daemon=True)
@@ -163,7 +177,7 @@ def sendLink(self, textLink):
         open_connectedWindow2(self)
 
 def open_connectedWindow2(self):
-    self.hide()
+    #self.hide()
     if self.next is None:
         self.next = thirdWindow()
     self.next.show()
@@ -245,6 +259,8 @@ def open_connectedWindow(self):
     if self.w is None:
         self.w = connectedWindow()
     self.w.show()
+
+
 
 
 if __name__ == "__main__":
