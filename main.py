@@ -3,9 +3,10 @@ import sys
 import threading
 from PySide6 import QtCore, QtWidgets, QtGui
 import requests
-#from.thirdWindow import thirdWindow
+from Models.LinkQueue import LinkQueue
 
 id = {"uuid": ""}
+queue = LinkQueue()
 
 class thirdWindow(QtWidgets.QWidget):
     def __init__(self):
@@ -53,7 +54,7 @@ class thirdWindow(QtWidgets.QWidget):
 
         splitter.addWidget(scroll_area)
        
-        splitter.setSizes([200, 300])  
+        splitter.setSizes([200, 600])
   
         layout.addWidget(splitter)
 
@@ -90,7 +91,7 @@ class thirdWindow(QtWidgets.QWidget):
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
         except Exception as e:
-            print(f"A System error has occured: {e}", file=sys.stderr)
+            print(f"A System error has occurred: {e}", file=sys.stderr)
 
         sys.exit()
 
@@ -132,6 +133,7 @@ class connectedWindow(QtWidgets.QWidget):
     def buttonClick2(self):
         textLink = self.input_box2.text()
         handleLink(self, textLink)
+        queue.addLink(textLink)
         self.input_box2.setText("")
     
 
@@ -148,7 +150,7 @@ class connectedWindow(QtWidgets.QWidget):
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
         except Exception as e:
-            print(f"A System error has occured: {e}", file=sys.stderr)
+            print(f"A System error has occurred: {e}", file=sys.stderr)
 
         sys.exit()
 
@@ -168,14 +170,14 @@ def sendLink(self, textLink):
 
     try:
         response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
-        print(response)    
+        print(response)
+
+        if response.status_code == 200:
+            open_connectedWindow2(self)
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
     except Exception as e:
-        print(f"A System error has occured: {e}", file=sys.stderr)
-
-    if response.status_code == 200:
-        open_connectedWindow2(self)
+        print(f"A System error has occurred: {e}", file=sys.stderr)
 
 def open_connectedWindow2(self):
     #self.hide()
@@ -246,14 +248,14 @@ def sendtext(self, text):
 
     try:
         response = requests.post("http://127.0.0.1:8000", data=json_data, headers={'Content-Type': 'application/json'})
-        print(response)    
+        print(response)
+
+        if response.status_code == 200:
+            open_connectedWindow(self)
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
     except Exception as e:
-        print(f"A System error has occured: {e}", file=sys.stderr)
-    
-    if response.status_code == 200:
-        open_connectedWindow(self)
+        print(f"A System error has occurred: {e}", file=sys.stderr)
 
 def open_connectedWindow(self):
     self.hide()
@@ -262,14 +264,11 @@ def open_connectedWindow(self):
     self.w.show()
 
 
-
-
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     
-    widget = discordBot()
+    widget = thirdWindow()
     widget.resize(800, 600)
     widget.show()
 
     sys.exit(app.exec())
-
