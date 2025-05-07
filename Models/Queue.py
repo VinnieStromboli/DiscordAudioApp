@@ -1,4 +1,3 @@
-from PyQt6.QtHelp import senderSignalIndex
 from PySide6 import QtCore, Qt
 import Link
 
@@ -11,9 +10,9 @@ class LinkQueue(QtCore.QAbstractListModel):
     def data(self, index, role):
         if role == Qt.DisplayRole:
             # See below for the data structure.
-            name, time = self.links[index.row()]
+            textLink, time = self.links[index.row()]
             # Return the text only.
-            return name
+            return textLink
         return None
 
     def rowCount(self, index):
